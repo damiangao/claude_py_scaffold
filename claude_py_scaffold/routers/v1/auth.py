@@ -7,7 +7,10 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from claude_py_scaffold.database import get_db
-from claude_py_scaffold.exceptions import BadRequestException, DuplicateException, UnauthorizedException
+from claude_py_scaffold.exceptions import (
+    DuplicateException,
+    UnauthorizedException,
+)
 from claude_py_scaffold.models.user import User
 from claude_py_scaffold.schemas import Token, UserCreate, UserResponse
 from claude_py_scaffold.security import hash_password, verify_password
