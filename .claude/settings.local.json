@@ -56,7 +56,8 @@
       "Bash(git commit -m \"$\\(cat <<'EOF'\nfeat: 添加分页支持和 Alembic 数据库迁移\n\n- 新增分页功能 \\(PaginationParams, PageInfo, PaginatedResponse\\)\n- 重构 users 路由支持分页查询\n- 集成 Alembic 数据库迁移工具\n- 更新项目文档和 CHANGELOG\nEOF\n\\)\")",
       "Bash(git push origin main)",
       "Bash(uv run pytest tests/test_users.py -v)",
-      "Bash(git add -A && git commit -m \"$\\(cat <<'EOF'\nfix: 修复测试和用户名/邮箱重复检查\n\n- 将 duplicate 异常从 BadRequestException 改为 DuplicateException \\(409\\)\n- 修复测试中错误的用户创建路径\nEOF\n\\)\" && git push origin main)"
+      "Bash(git add -A && git commit -m \"$\\(cat <<'EOF'\nfix: 修复测试和用户名/邮箱重复检查\n\n- 将 duplicate 异常从 BadRequestException 改为 DuplicateException \\(409\\)\n- 修复测试中错误的用户创建路径\nEOF\n\\)\" && git push origin main)",
+      "Bash(git add -A && git commit -m \"$\\(cat <<'EOF'\nchore: 更新 pre-commit ruff 配置\n\n添加 --exit-non-zero-on-fix 参数，让 pre-commit 在修复后仍然检查错误\nEOF\n\\)\" && git push origin main)"
     ]
   }
 }
