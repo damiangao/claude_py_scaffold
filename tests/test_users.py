@@ -110,17 +110,23 @@ async def test_duplicate_username(client):
 @pytest.mark.asyncio
 async def test_duplicate_email(client):
     """测试邮箱重复"""
-    await client.post("/api/v1/auth/register", json={
-        "username": "user1",
-        "email": "test@example.com",
-        "password": "password123",
-    })
+    await client.post(
+        "/api/v1/auth/register",
+        json={
+            "username": "user1",
+            "email": "test@example.com",
+            "password": "password123",
+        },
+    )
 
-    response = await client.post("/api/v1/auth/register", json={
-        "username": "user2",
-        "email": "test@example.com",
-        "password": "password123",
-    })
+    response = await client.post(
+        "/api/v1/auth/register",
+        json={
+            "username": "user2",
+            "email": "test@example.com",
+            "password": "password123",
+        },
+    )
     assert response.status_code == 409
     assert "邮箱已被注册" in response.json()["error"]["message"]
 
@@ -129,16 +135,22 @@ async def test_duplicate_email(client):
 async def test_list_users(client):
     """测试用户列表（分页）"""
     # 创建多个用户
-    await client.post("/api/v1/auth/register", json={
-        "username": "user1",
-        "email": "user1@example.com",
-        "password": "password123",
-    })
-    await client.post("/api/v1/auth/register", json={
-        "username": "user2",
-        "email": "user2@example.com",
-        "password": "password123",
-    })
+    await client.post(
+        "/api/v1/auth/register",
+        json={
+            "username": "user1",
+            "email": "user1@example.com",
+            "password": "password123",
+        },
+    )
+    await client.post(
+        "/api/v1/auth/register",
+        json={
+            "username": "user2",
+            "email": "user2@example.com",
+            "password": "password123",
+        },
+    )
 
     # 获取用户列表（分页）
     response = await client.get("/api/v1/users/?page=1&page_size=10")
@@ -163,11 +175,14 @@ async def test_list_users_pagination(client):
     """测试分页功能"""
     # 创建 5 个用户
     for i in range(5):
-        await client.post("/api/v1/auth/register", json={
-            "username": f"user{i}",
-            "email": f"user{i}@example.com",
-            "password": "password123",
-        })
+        await client.post(
+            "/api/v1/auth/register",
+            json={
+                "username": f"user{i}",
+                "email": f"user{i}@example.com",
+                "password": "password123",
+            },
+        )
 
     # 第一页
     response = await client.get("/api/v1/users/?page=1&page_size=2")

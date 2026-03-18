@@ -13,7 +13,9 @@ def register_exception_handlers(app: FastAPI) -> None:
     """注册异常处理器"""
 
     @app.exception_handler(AppException)
-    async def app_exception_handler(request: Request, exc: AppException) -> JSONResponse:
+    async def app_exception_handler(
+        request: Request, exc: AppException
+    ) -> JSONResponse:
         """应用自定义异常"""
         logger.warning(f"AppException: {exc.error_code} - {exc.message}")
         return JSONResponse(
@@ -70,7 +72,9 @@ def register_exception_handlers(app: FastAPI) -> None:
         )
 
     @app.exception_handler(Exception)
-    async def global_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    async def global_exception_handler(
+        request: Request, exc: Exception
+    ) -> JSONResponse:
         """全局异常"""
         logger.error(f"Unhandled exception: {exc}", exc_info=True)
         return JSONResponse(

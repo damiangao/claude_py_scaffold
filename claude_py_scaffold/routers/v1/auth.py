@@ -19,7 +19,9 @@ from claude_py_scaffold.token import create_access_token
 router = APIRouter(prefix="/auth", tags=["认证"])
 
 
-@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED
+)
 async def register(
     user_in: UserCreate,
     db: AsyncSession = Depends(get_db),
