@@ -63,7 +63,8 @@
       "Bash(git add -A && git commit -m \"$\\(cat <<'EOF'\nchore: 格式化代码\n\n运行 ruff format 修复 CI 格式化问题\nEOF\n\\)\" && git push origin main)",
       "Bash(pre-commit run --all-files)",
       "Bash(uv run pre-commit run --all-files)",
-      "Bash(git add -A && git commit -m \"$\\(cat <<'EOF'\nchore: 添加 pre-commit 到开发依赖\n\n- 在 pyproject.toml 中添加 pre-commit 到 dev dependencies\n- 将 pytest hook 移到 commit-msg 阶段，避免与格式化冲突\nEOF\n\\)\" && git push origin main)"
+      "Bash(git add -A && git commit -m \"$\\(cat <<'EOF'\nchore: 添加 pre-commit 到开发依赖\n\n- 在 pyproject.toml 中添加 pre-commit 到 dev dependencies\n- 将 pytest hook 移到 commit-msg 阶段，避免与格式化冲突\nEOF\n\\)\" && git push origin main)",
+      "Bash(git add -A && git commit -m \"$\\(cat <<'EOF'\ndocs: 添加 Claude Code 开发优化文档\n\n- 新增 .claude/commands.md - 常用命令和模板\n- 新增 .claude/DEVELOPMENT.md - 开发规范\n- 更新 CLAUDE.md - 添加 Claude Code 优化章节\n- 更新 README.md - 添加 Claude Code 支持说明\nEOF\n\\)\" && git push origin main)"
     ]
   }
 }

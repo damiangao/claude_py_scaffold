@@ -253,6 +253,22 @@ claude_py_scaffold/
 - GitHub Actions (test.yml, lint.yml, docker-build.yml)
 - 支持多 Python 版本测试 (3.10, 3.11, 3.12)
 
+## Claude Code 支持
+
+本项目专为 Claude Code 优化：
+
+### 配置说明
+
+- `.claude/settings.local.json` - Claude Code 权限配置，预配置常用命令自动批准
+- `.claude/commands.md` - 常用命令和模板参考
+- `CLAUDE.md` - 项目架构和开发规范文档
+
+### 使用建议
+
+1. **创建新模块** - 参考 `commands.md` 中的步骤和模板
+2. **代码质量** - pre-commit 自动格式化，CI 检查
+3. **数据库迁移** - 修改模型后运行 `alembic revision --autogenerate`
+
 ## 环境变量
 
 | 变量 | 说明 | 默认值 |

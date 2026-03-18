@@ -127,3 +127,30 @@ claude_py_scaffold/
 - 使用 `httpx.AsyncClient` 进行接口测试
 - 每个测试前重置数据库状态（使用 fixture）
 - 测试函数以 `test_` 开头
+
+## Claude Code 优化
+
+### 权限配置
+
+`.claude/settings.local.json` 配置了常用命令的自动批准：
+- `uv sync/run/pip` - 包管理
+- `git` - 版本控制
+- `pytest/ruff/pre-commit` - 测试和代码质量
+- `alembic` - 数据库迁移
+- `docker/docker-compose` - 容器操作
+
+### 快速开始新模块
+
+参考 `.claude/commands.md` 中的模板创建新模块：
+
+1. Model → `models/<name>.py`
+2. Schema → `schemas.py`
+3. Router → `routers/v1/<name>.py`
+4. 测试 → `tests/test_<name>.py`
+5. 迁移 → `alembic revision`
+
+### 上下文管理
+
+- 保持代码简洁，避免过度抽象
+- 优先使用项目现有模式（参考 `users.py`）
+- 修改前先读取相关代码
