@@ -135,13 +135,15 @@ claude_py_scaffold/
 - `uv sync/run` - package management
 - `pytest/ruff/pre-commit` - testing and linting
 - `alembic` - database migrations
-- `git status/diff/log` - read-only git operations
+- `git status/diff/log/add/commit` - git operations (push requires confirmation)
 - `ls/cat/find` - file operations
 
 Commands requiring confirmation:
-- `git add/commit/push` - git history changes
+- `git push` - remote changes
+- `git checkout/merge/reset` - potential code loss
 - `rm/mv/cp` - file modifications
 - `docker*` - container operations
+- `curl/wget/kill/pkill` - external operations
 
 ### Quick Start for New Modules
 
@@ -158,3 +160,8 @@ See `.claude/commands.md` for templates:
 - Keep code simple, avoid over-engineering
 - Follow existing patterns (see `users.py`)
 - Read related files before modifying
+
+### Command Execution
+
+- Run commands separately (e.g., `git add -A` then `git commit -m "..."`)
+- Avoid composite commands with `&&` - they may not match permission patterns
