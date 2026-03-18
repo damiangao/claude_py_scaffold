@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir F:\\\\workspace\\\\agent_sandbox\\\\fastapi_practice\\\\claude_py_scaffold)",
+      "WebSearch",
+      "Bash(cd F:/workspace/agent_sandbox/fastapi_practice && uv sync --dev 2>&1)",
+      "Bash(cd F:/workspace/agent_sandbox/fastapi_practice && uv run uvicorn claude_py_scaffold.main:app --reload --host 0.0.0.0 --port 8000)",
+      "Bash(curl http://127.0.0.1:8000/)",
+      "Bash(curl http://127.0.0.1:8000/health)",
+      "Bash(cd F:/workspace/agent_sandbox/fastapi_practice && uv run pytest -v 2>&1)",
+      "Bash(cd F:/workspace/agent_sandbox/fastapi_practice && uv build 2>&1)",
+      "Bash(uv run uvicorn claude_py_scaffold.main:app --reload)",
+      "Bash(uv sync --dev)",
+      "Bash(uv run ruff check .)",
+      "Bash(uv run ruff format .)",
+      "Bash(uv pip install pre-commit)",
+      "Bash(uv run pre-commit install)",
+      "Bash(git init)",
+      "Bash(git status)",
+      "Bash(git add .)",
+      "Bash(git commit -m \"init\")"
+    ]
+  }
+}

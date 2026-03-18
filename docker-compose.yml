@@ -1,0 +1,39 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+      - DATABASE_URL=sqlite+aiosqlite:///./app.db
+      - LOG_LEVEL=DEBUG
+    volumes:
+      - .:/app
+      - /app/__pycache__
+    command: uv run uvicorn claude_py_scaffold.main:app --reload --host 0.0.0.0 --port 8000
+
+  # PostgreSQL (生产环境使用)
+  # postgres:
+  #   image: postgres:16-alpine
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_USER: app
+  #     POSTGRES_PASSWORD: app123
+  #     POSTGRES_DB: fastapi_scaffold
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+  # Redis (缓存/会话)
+  # redis:
+  #   image: redis:7-alpine
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+
+# volumes:
+#   postgres_data:
+#   redis_data:
