@@ -2,66 +2,66 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 项目概述
+## Project Overview
 
-Claude Py Scaffold - 专为 Claude Code 开发的 FastAPI Python 脚手架项目。
+Claude Py Scaffold - A FastAPI Python scaffold optimized for Claude Code development.
 
-## 常用命令
+## Common Commands
 
 ```bash
-# 安装依赖
-uv sync          # 生产依赖
-uv sync --dev    # 开发依赖
+# Install dependencies
+uv sync          # production
+uv sync --dev    # development
 
-# 运行
+# Run server
 uv run uvicorn claude_py_scaffold.main:app --reload
 
-# 测试
+# Testing
 uv run pytest
 uv run pytest tests/test_users.py::test_create_user
 
-# 代码检查
+# Code quality
 uv run ruff check .
 uv run ruff format .
 
-# 数据库迁移
-uv run alembic revision --autogenerate -m "消息"
+# Database migrations
+uv run alembic revision --autogenerate -m "message"
 uv run alembic upgrade head
 uv run alembic downgrade -1
 
-# 发布
+# Publish
 uv build
 uv publish
 ```
 
-## 代码架构
+## Project Structure
 
 ```
 claude_py_scaffold/
-├── claude_py_scaffold/        # 主包
-│   ├── main.py              # FastAPI 应用入口
-│   ├── config.py            # 配置管理 (pydantic-settings)
-│   ├── database.py          # 数据库连接 (SQLAlchemy)
-│   ├── logging.py           # 日志配置
-│   ├── middleware.py        # CORS 中间件
-│   ├── exceptions.py        # 自定义异常
-│   ├── handlers.py          # 异常处理器
-│   ├── deps.py              # 依赖注入
-│   ├── security.py          # 密码加密
-│   ├── token.py             # JWT 令牌
-│   ├── schemas.py           # Pydantic 数据模型
-│   ├── utils/               # 工具函数
-│   │   └── pagination.py    # 分页工具
-│   ├── models/              # SQLAlchemy 模型
-│   │   ├── base.py          # 模型基类
-│   │   └── user.py          # 用户模型
+├── claude_py_scaffold/        # Main package
+│   ├── main.py              # App entry point
+│   ├── config.py            # Config (pydantic-settings)
+│   ├── database.py          # Database (SQLAlchemy async)
+│   ├── logging.py           # Logging config
+│   ├── middleware.py        # CORS middleware
+│   ├── exceptions.py        # Custom exceptions
+│   ├── handlers.py          # Exception handlers
+│   ├── deps.py              # Dependencies
+│   ├── security.py          # Password hashing
+│   ├── token.py             # JWT tokens
+│   ├── schemas.py           # Pydantic models
+│   ├── utils/               # Utilities
+│   │   └── pagination.py    # Pagination helper
+│   ├── models/              # SQLAlchemy models
+│   │   ├── base.py          # Base model
+│   │   └── user.py          # User model
 │   └── routers/
 │       └── v1/              # API v1
-│           ├── auth.py      # 认证路由
-│           └── users.py     # 用户路由
+│           ├── auth.py      # Auth routes
+│           └── users.py     # User routes
 ├── tests/
-│   └── test_users.py        # 单元测试
-├── alembic/                 # 数据库迁移
+│   └── test_users.py        # Unit tests
+├── alembic/                 # Database migrations
 │   ├── env.py
 │   └── versions/
 ├── alembic.ini
@@ -72,85 +72,89 @@ claude_py_scaffold/
 └── README.md
 ```
 
-## 模块说明
+## Module Details
 
-### 配置管理 (config.py)
-- 使用 `pydantic-settings` 读取环境变量
-- `get_settings()` 返回单例配置
+### Config (config.py)
+- `pydantic-settings` for environment variables
+- `get_settings()` returns singleton
 
-### 数据库 (database.py)
-- 异步 SQLAlchemy 引擎
-- `get_db()` 依赖注入获取会话
+### Database (database.py)
+- Async SQLAlchemy engine
+- `get_db()` dependency injection
 
-### 日志 (logging.py)
-- 彩色控制台输出
-- `setup_logging()` 初始化日志
-- `get_logger(name)` 获取日志器
+### Logging (logging.py)
+- Colored console output
+- `setup_logging()` initializes logging
+- `get_logger(name)` gets logger instance
 
-### 异常处理 (exceptions.py, handlers.py)
-- `AppException` 基类
-- `NotFoundException`, `DuplicateException` 等子类
-- `register_exception_handlers()` 注册处理器
+### Exception Handling (exceptions.py, handlers.py)
+- `AppException` base class
+- `NotFoundException`, `DuplicateException` subclasses
+- `register_exception_handlers()` registers handlers
 
-### 中间件 (middleware.py)
-- CORS 跨域支持
-- 开发环境默认允许 localhost:3000/8080
+### Middleware (middleware.py)
+- CORS support (localhost:3000/8080 by default)
 
-### 分页 (utils/pagination.py)
-- `PaginationParams` - 分页参数（page, page_size）
-- `paginate()` - 通用分页查询函数
-- `PaginatedResponse` - 分页响应格式
+### Pagination (utils/pagination.py)
+- `PaginationParams` - page, page_size
+- `paginate()` - generic pagination function
+- `PaginatedResponse` - response format
 
-### 数据库迁移 (alembic/)
-- Alembic 配置在 `alembic.ini`
-- 迁移脚本在 `alembic/versions/`
-- 使用 `uv run alembic revision --autogenerate -m "消息"` 生成迁移
+### Migrations (alembic/)
+- Config in `alembic.ini`
+- Scripts in `alembic/versions/`
+- Use `uv run alembic revision --autogenerate -m "msg"`
 
-## 代码规范
+## Code Style
 
-- 类型注解：使用 Python 类型注解
-- Pydantic 模型：放在 `schemas.py` 中
-- 路由组织：按功能模块放在 `routers/` 目录下
-- 导入顺序：标准库 → 第三方库 → 本地模块（ruff 自动排序）
-- 模型组织：每个模型独立文件，统一在 `models/__init__.py` 导出
-- 分页接口：使用 `PaginationParams` 和 `paginate()`
+- Type hints for all functions
+- Pydantic models in `schemas.py`
+- Routes organized in `routers/` by module
+- Import order: stdlib → third-party → local (auto-sorted by ruff)
+- One model per file, exported in `models/__init__.py`
+- Use `PaginationParams` and `paginate()` for pagination
 
 ## Pre-commit
 
-- 配置在 `.pre-commit-config.yaml`
-- commit 时自动运行 ruff 检查和格式化
-- 使用 `--exit-non-zero-on-fix` 确保修复后仍检查错误
+- Config in `.pre-commit-config.yaml`
+- Auto runs ruff check and format on commit
+- Uses `--exit-non-zero-on-fix` to catch unfixable issues
 
-## 测试规范
+## Testing
 
-- 测试文件放在 `tests/` 目录
-- 使用 `httpx.AsyncClient` 进行接口测试
-- 每个测试前重置数据库状态（使用 fixture）
-- 测试函数以 `test_` 开头
+- Tests in `tests/` directory
+- Use `httpx.AsyncClient` for API tests
+- Reset database state with fixtures
+- Test functions start with `test_`
 
-## Claude Code 优化
+## Claude Code Optimization
 
-### 权限配置
+### Permissions
 
-`.claude/settings.local.json` 配置了常用命令的自动批准：
-- `uv sync/run/pip` - 包管理
-- `git` - 版本控制
-- `pytest/ruff/pre-commit` - 测试和代码质量
-- `alembic` - 数据库迁移
-- `docker/docker-compose` - 容器操作
+`.claude/settings.local.json` auto-approves common commands:
+- `uv sync/run` - package management
+- `pytest/ruff/pre-commit` - testing and linting
+- `alembic` - database migrations
+- `git status/diff/log` - read-only git operations
+- `ls/cat/find` - file operations
 
-### 快速开始新模块
+Commands requiring confirmation:
+- `git add/commit/push` - git history changes
+- `rm/mv/cp` - file modifications
+- `docker*` - container operations
 
-参考 `.claude/commands.md` 中的模板创建新模块：
+### Quick Start for New Modules
+
+See `.claude/commands.md` for templates:
 
 1. Model → `models/<name>.py`
 2. Schema → `schemas.py`
 3. Router → `routers/v1/<name>.py`
-4. 测试 → `tests/test_<name>.py`
-5. 迁移 → `alembic revision`
+4. Tests → `tests/test_<name>.py`
+5. Migration → `alembic revision`
 
-### 上下文管理
+### Context Guidelines
 
-- 保持代码简洁，避免过度抽象
-- 优先使用项目现有模式（参考 `users.py`）
-- 修改前先读取相关代码
+- Keep code simple, avoid over-engineering
+- Follow existing patterns (see `users.py`)
+- Read related files before modifying

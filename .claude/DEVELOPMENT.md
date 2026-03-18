@@ -1,32 +1,32 @@
-# 开发规范
+# Development Guidelines
 
-## 代码风格
+## Code Style
 
-- 使用 type hints 标注类型
-- 函数添加 docstring
-- 遵循 ruff 格式规范
+- Use type hints for all functions
+- Add docstrings to functions
+- Follow ruff formatting rules
 
-## 数据库
+## Database
 
-- 所有表继承 `models/base.py` 的 Base
-- 添加 `created_at` 和 `updated_at` 时间戳
-- 外键使用 `ForeignKey` 约束
+- All models inherit from `Base` in `models/base.py`
+- Add `created_at` and `updated_at` timestamps
+- Use `ForeignKey` constraints for relationships
 
-## API 设计
+## API Design
 
-- RESTful 风格
-- 版本控制 `/api/v1/`
-- 使用 `APIRouter` 组织路由
-- 响应使用统一 Schema
+- RESTful style
+- Version control with `/api/v1/`
+- Use `APIRouter` for organization
+- Consistent response schemas
 
-## 测试
+## Testing
 
-- 测试 async 函数使用 `@pytest.mark.asyncio`
-- 使用 fixture 管理数据库状态
-- 测试覆盖正常和异常情况
+- Use `@pytest.mark.asyncio` for async tests
+- Reset database state with fixtures
+- Cover normal and edge cases
 
-## Git 提交
+## Git Commits
 
-- 使用语义化提交信息
-- 格式：`<type>: <description>`
-- 类型：feat, fix, docs, chore, refactor, test
+- Use semantic commit messages
+- Format: `<type>: <description>`
+- Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`

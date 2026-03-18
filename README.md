@@ -259,15 +259,16 @@ claude_py_scaffold/
 
 ### 配置说明
 
-- `.claude/settings.local.json` - Claude Code 权限配置，预配置常用命令自动批准
-- `.claude/commands.md` - 常用命令和模板参考
-- `CLAUDE.md` - 项目架构和开发规范文档
+- `.claude/settings.local.json` - 权限配置，自动批准常用命令
+- `.claude/commands.md` - 常用命令和代码模板
+- `CLAUDE.md` - 项目架构和开发规范（英文）
+- `.claude/DEVELOPMENT.md` - 开发规范（英文）
 
 ### 使用建议
 
-1. **创建新模块** - 参考 `commands.md` 中的步骤和模板
-2. **代码质量** - pre-commit 自动格式化，CI 检查
-3. **数据库迁移** - 修改模型后运行 `alembic revision --autogenerate`
+1. 创建新模块：参考 `.claude/commands.md` 中的模板
+2. 代码质量：pre-commit 自动格式化
+3. 数据库迁移：模型修改后运行 `alembic revision --autogenerate`
 
 ## 环境变量
 
