@@ -31,8 +31,7 @@
       "Bash(echo*)",
       "Bash(sleep*)",
       "WebSearch",
-      "WebFetch",
-      "Bash(git add -A && git commit -m \"$\\(cat <<'EOF'\ndocs: Update .claude/commands.md to English\n\n- Restored .claude/commands.md with English content\n- Updated README.md to reference commands.md\n- Optimized .claude/settings.local.json permissions\nEOF\n\\)\" && git push origin main)"
+      "WebFetch"
     ]
   }
 }
