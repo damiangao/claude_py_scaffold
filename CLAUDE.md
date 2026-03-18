@@ -111,9 +111,15 @@ claude_py_scaffold/
 - 类型注解：使用 Python 类型注解
 - Pydantic 模型：放在 `schemas.py` 中
 - 路由组织：按功能模块放在 `routers/` 目录下
-- 导入顺序：标准库 → 第三方库 → 本地模块
+- 导入顺序：标准库 → 第三方库 → 本地模块（ruff 自动排序）
 - 模型组织：每个模型独立文件，统一在 `models/__init__.py` 导出
 - 分页接口：使用 `PaginationParams` 和 `paginate()`
+
+## Pre-commit
+
+- 配置在 `.pre-commit-config.yaml`
+- commit 时自动运行 ruff 检查和格式化
+- 使用 `--exit-non-zero-on-fix` 确保修复后仍检查错误
 
 ## 测试规范
 

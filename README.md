@@ -75,6 +75,10 @@ pip install pre-commit  # 或 uv pip install pre-commit
 pre-commit install
 ```
 
+pre-commit 会在 commit 时自动：
+- 使用 ruff 检查并修复代码格式
+- 如果修复后仍有无法自动修复的问题，会阻止 commit
+
 ### 发布
 
 ```bash
