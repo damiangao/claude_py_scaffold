@@ -18,7 +18,12 @@
       "Bash(git init)",
       "Bash(git status)",
       "Bash(git add .)",
-      "Bash(git commit -m \"init\")"
+      "Bash(git commit -m \"init\")",
+      "Bash(git commit -m \"Initial commit: Claude Py Scaffold\n\nFastAPI Python 脚手架，专为 Claude Code 开发优化\n\n- FastAPI 框架 + SQLAlchemy 异步数据库\n- JWT 认证 + bcrypt 密码加密\n- 配置管理 + 日志系统 + 异常处理\n- CORS 中间件 + API 版本控制\n- Docker + docker-compose 支持\n- GitHub Actions CI/CD\n- Ruff 代码质量 + Pre-commit hooks\n- 单元测试 \\(pytest\\)\")",
+      "Bash(git branch -M main)",
+      "Bash(git remote add origin git@github.com:damiangao/claude_py_scaffold.git)",
+      "Bash(git push -u origin main)",
+      "Bash(git rm --cached app.db && rm -f app.db)"
     ]
   }
 }
