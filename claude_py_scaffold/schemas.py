@@ -1,6 +1,9 @@
 from datetime import datetime
 
 from pydantic import BaseModel, Field, ConfigDict
+from typing import Generic, TypeVar
+
+T = TypeVar("T")
 
 
 class UserCreate(BaseModel):
@@ -41,3 +44,33 @@ class TokenPayload(BaseModel):
 
     sub: str | None = None
     exp: datetime | None = None
+
+
+class PaginationParams(BaseModel):
+    """分页参数"""
+
+    page: int = Field(1, ge=1, description="页码")
+    page_size: int = Field(10, ge=1, le=100, description="每页数量")
+
+    @property
+    def offset(self) -> int:
+        """计算偏移量"""
+        return (self.page - 1) * self.page_size
+
+
+class PageInfo(BaseModel):
+    """分页信息"""
+
+    page: int = Field(..., description="当前页码")
+    page_size: int = Field(..., description="每页数量")
+    total: int = Field(..., description="总记录数")
+    total_pages: int = Field(..., description="总页数")
+    has_next: bool = Field(..., description="是否有下一页")
+    has_prev: bool = Field(..., description="是否有上一页")
+
+
+class PaginatedResponse(BaseModel, Generic[T]):
+    """分页响应"""
+
+    items: list[T]
+    page_info: PageInfo

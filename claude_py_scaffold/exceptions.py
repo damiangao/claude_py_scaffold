@@ -1,7 +1,5 @@
 from typing import Any
 
-from pydantic import ValidationError
-
 
 class AppException(Exception):
     """应用异常基类"""

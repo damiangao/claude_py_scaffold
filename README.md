@@ -27,7 +27,7 @@ cp .env.example .env
 ### 3. 启动服务器
 
 ```bash
-uv run uvicorn fastapi_practice.main:app --reload
+uv run uvicorn claude_py_scaffold.main:app --reload
 ```
 
 访问：
@@ -60,6 +60,11 @@ uv run ruff format .
 # 运行测试
 uv run pytest
 uv run pytest -v
+
+# 数据库迁移
+uv run alembic revision --autogenerate -m "消息"
+uv run alembic upgrade head
+uv run alembic downgrade -1
 ```
 
 ### Pre-commit
@@ -111,7 +116,7 @@ docker run -p 8000:8000 claude-py-scaffold
 | 方法 | 路径 | 说明 | 认证 |
 |------|------|------|------|
 | GET | `/api/v1/users/me` | 获取当前用户 | ✅ |
-| GET | `/api/v1/users/` | 用户列表 | ❌ |
+| GET | `/api/v1/users/` | 用户列表（分页） | ❌ |
 | GET | `/api/v1/users/{id}` | 用户详情 | ❌ |
 
 ### 其他
@@ -142,6 +147,9 @@ curl -X GET http://localhost:8000/api/v1/users/me \
 
 # 4. 健康检查
 curl http://localhost:8000/health
+
+# 5. 用户列表（分页）
+curl "http://localhost:8000/api/v1/users/?page=1&page_size=10"
 ```
 
 ## 项目结构
@@ -161,6 +169,9 @@ claude_py_scaffold/
 │   ├── security.py          # 密码加密
 │   ├── token.py             # JWT 令牌
 │   ├── schemas.py           # Pydantic 模型
+│   ├── utils/               # 工具函数
+│   │   ├── __init__.py
+│   │   └── pagination.py    # 分页工具
 │   ├── models/              # SQLAlchemy 模型
 │   │   ├── __init__.py
 │   │   ├── base.py          # 模型基类
@@ -173,6 +184,12 @@ claude_py_scaffold/
 │           └── users.py     # 用户路由
 ├── tests/
 │   └── test_users.py        # 单元测试
+├── alembic/                 # 数据库迁移
+│   ├── __init__.py
+│   ├── env.py
+│   ├── script.py.mako
+│   └── versions/
+├── alembic.ini              # Alembic 配置
 ├── scripts/
 │   └── docker-build.sh      # Docker 脚本
 ├── .github/workflows/
@@ -207,6 +224,15 @@ claude_py_scaffold/
 - JWT 令牌
 - OAuth2 Password Flow
 - bcrypt 密码加密
+
+### 数据库迁移
+- Alembic 数据库版本管理
+- 支持自动迁移生成
+- 支持回滚操作
+
+### 分页
+- 通用分页工具
+- 分页响应格式统一
 
 ### 中间件
 - CORS 跨域支持（开发环境默认允许 localhost:3000/8080）

@@ -17,9 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CORS 中间件
 - LICENSE (MIT)
 - CI 工作流 (test.yml, lint.yml)
+- 分页支持 (PaginationParams, PaginatedResponse)
+- Alembic 数据库迁移
 
 ### Changed
 - 路由重构为 v1 版本
+- 用户列表接口添加分页功能
 
 ## [0.1.0] - 2026-03-19
 

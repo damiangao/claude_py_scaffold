@@ -1,4 +1,3 @@
-from typing import List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy import select
@@ -8,7 +7,8 @@ from claude_py_scaffold.database import get_db
 from claude_py_scaffold.deps import CurrentUser
 from claude_py_scaffold.exceptions import NotFoundException
 from claude_py_scaffold.models.user import User
-from claude_py_scaffold.schemas import UserResponse
+from claude_py_scaffold.schemas import PaginatedResponse, PaginationParams, UserResponse
+from claude_py_scaffold.utils.pagination import paginate
 
 router = APIRouter(prefix="/users", tags=["用户管理"])
 
@@ -19,11 +19,14 @@ async def get_current_user_info(current_user: CurrentUser) -> User:
     return current_user
 
 
-@router.get("/", response_model=List[UserResponse])
-async def list_users(db: AsyncSession = Depends(get_db)) -> List[User]:
-    """获取用户列表"""
-    result = await db.execute(select(User))
-    return result.scalars().all()
+@router.get("/", response_model=PaginatedResponse[UserResponse])
+async def list_users(
+    pagination: PaginationParams = Depends(),
+    db: AsyncSession = Depends(get_db),
+) -> PaginatedResponse[UserResponse]:
+    """获取用户列表（分页）"""
+    query = select(User).order_by(User.id)
+    return await paginate(db, query, pagination)
 
 
 @router.get("/{user_id}", response_model=UserResponse)

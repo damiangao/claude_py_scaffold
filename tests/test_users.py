@@ -58,7 +58,7 @@ async def test_create_user(client):
         "email": "test@example.com",
         "password": "password123",
     }
-    response = await client.post("/users/", json=user_data)
+    response = await client.post("/api/v1/auth/register", json=user_data)
     assert response.status_code == 201
     data = response.json()
     assert data["username"] == "testuser"
@@ -74,11 +74,11 @@ async def test_get_user(client):
         "email": "test@example.com",
         "password": "password123",
     }
-    create_response = await client.post("/users/", json=user_data)
+    create_response = await client.post("/api/v1/auth/register", json=user_data)
     user_id = create_response.json()["id"]
 
     # 获取用户
-    response = await client.get(f"/users/{user_id}")
+    response = await client.get(f"/api/v1/users/{user_id}")
     assert response.status_code == 200
     data = response.json()
     assert data["username"] == "testuser"
@@ -87,7 +87,7 @@ async def test_get_user(client):
 @pytest.mark.asyncio
 async def test_get_user_not_found(client):
     """测试获取不存在的用户"""
-    response = await client.get("/users/999")
+    response = await client.get("/api/v1/users/999")
     assert response.status_code == 404
     assert "用户不存在" in response.json()["error"]["message"]
 
@@ -100,9 +100,9 @@ async def test_duplicate_username(client):
         "email": "test@example.com",
         "password": "password123",
     }
-    await client.post("/users/", json=user_data)
+    await client.post("/api/v1/auth/register", json=user_data)
 
-    response = await client.post("/users/", json=user_data)
+    response = await client.post("/api/v1/auth/register", json=user_data)
     assert response.status_code == 409
     assert "用户名已存在" in response.json()["error"]["message"]
 
@@ -110,13 +110,13 @@ async def test_duplicate_username(client):
 @pytest.mark.asyncio
 async def test_duplicate_email(client):
     """测试邮箱重复"""
-    await client.post("/users/", json={
+    await client.post("/api/v1/auth/register", json={
         "username": "user1",
         "email": "test@example.com",
         "password": "password123",
     })
 
-    response = await client.post("/users/", json={
+    response = await client.post("/api/v1/auth/register", json={
         "username": "user2",
         "email": "test@example.com",
         "password": "password123",
@@ -127,15 +127,71 @@ async def test_duplicate_email(client):
 
 @pytest.mark.asyncio
 async def test_list_users(client):
-    """测试用户列表"""
+    """测试用户列表（分页）"""
+    # 创建多个用户
     await client.post("/users/", json={
         "username": "user1",
         "email": "user1@example.com",
         "password": "password123",
     })
+    await client.post("/users/", json={
+        "username": "user2",
+        "email": "user2@example.com",
+        "password": "password123",
+    })
 
-    response = await client.get("/users/")
+    # 获取用户列表（分页）
+    response = await client.get("/users/?page=1&page_size=10")
     assert response.status_code == 200
     data = response.json()
-    assert len(data) == 1
-    assert data[0]["username"] == "user1"
+
+    # 检查分页结构
+    assert "items" in data
+    assert "page_info" in data
+    assert data["page_info"]["total"] == 2
+    assert data["page_info"]["page"] == 1
+    assert data["page_info"]["page_size"] == 10
+
+    # 检查用户数据
+    items = data["items"]
+    assert len(items) == 2
+    assert items[0]["username"] == "user1"
+
+
+@pytest.mark.asyncio
+async def test_list_users_pagination(client):
+    """测试分页功能"""
+    # 创建 5 个用户
+    for i in range(5):
+        await client.post("/users/", json={
+            "username": f"user{i}",
+            "email": f"user{i}@example.com",
+            "password": "password123",
+        })
+
+    # 第一页
+    response = await client.get("/users/?page=1&page_size=2")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data["items"]) == 2
+    assert data["page_info"]["total"] == 5
+    assert data["page_info"]["total_pages"] == 3
+    assert data["page_info"]["has_next"] is True
+    assert data["page_info"]["has_prev"] is False
+
+    # 第二页
+    response = await client.get("/users/?page=2&page_size=2")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data["items"]) == 2
+    assert data["page_info"]["page"] == 2
+    assert data["page_info"]["has_next"] is True
+    assert data["page_info"]["has_prev"] is True
+
+    # 第三页（最后一页）
+    response = await client.get("/users/?page=3&page_size=2")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data["items"]) == 1
+    assert data["page_info"]["has_next"] is False
+    assert data["page_info"]["has_prev"] is True

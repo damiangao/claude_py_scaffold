@@ -24,6 +24,11 @@ uv run pytest tests/test_users.py::test_create_user
 uv run ruff check .
 uv run ruff format .
 
+# 数据库迁移
+uv run alembic revision --autogenerate -m "消息"
+uv run alembic upgrade head
+uv run alembic downgrade -1
+
 # 发布
 uv build
 uv publish
@@ -41,7 +46,12 @@ claude_py_scaffold/
 │   ├── middleware.py        # CORS 中间件
 │   ├── exceptions.py        # 自定义异常
 │   ├── handlers.py          # 异常处理器
+│   ├── deps.py              # 依赖注入
+│   ├── security.py          # 密码加密
+│   ├── token.py             # JWT 令牌
 │   ├── schemas.py           # Pydantic 数据模型
+│   ├── utils/               # 工具函数
+│   │   └── pagination.py    # 分页工具
 │   ├── models/              # SQLAlchemy 模型
 │   │   ├── base.py          # 模型基类
 │   │   └── user.py          # 用户模型
@@ -51,10 +61,14 @@ claude_py_scaffold/
 │           └── users.py     # 用户路由
 ├── tests/
 │   └── test_users.py        # 单元测试
-├── pyproject.toml           # 项目配置
-├── uv.lock                  # 依赖锁文件
-├── .env.example             # 环境变量示例
-├── Dockerfile               # Docker 配置
+├── alembic/                 # 数据库迁移
+│   ├── env.py
+│   └── versions/
+├── alembic.ini
+├── pyproject.toml
+├── uv.lock
+├── .env.example
+├── Dockerfile
 └── README.md
 ```
 
@@ -82,6 +96,16 @@ claude_py_scaffold/
 - CORS 跨域支持
 - 开发环境默认允许 localhost:3000/8080
 
+### 分页 (utils/pagination.py)
+- `PaginationParams` - 分页参数（page, page_size）
+- `paginate()` - 通用分页查询函数
+- `PaginatedResponse` - 分页响应格式
+
+### 数据库迁移 (alembic/)
+- Alembic 配置在 `alembic.ini`
+- 迁移脚本在 `alembic/versions/`
+- 使用 `uv run alembic revision --autogenerate -m "消息"` 生成迁移
+
 ## 代码规范
 
 - 类型注解：使用 Python 类型注解
@@ -89,6 +113,7 @@ claude_py_scaffold/
 - 路由组织：按功能模块放在 `routers/` 目录下
 - 导入顺序：标准库 → 第三方库 → 本地模块
 - 模型组织：每个模型独立文件，统一在 `models/__init__.py` 导出
+- 分页接口：使用 `PaginationParams` 和 `paginate()`
 
 ## 测试规范
 

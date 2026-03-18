@@ -1,6 +1,5 @@
 import logging
 import sys
-from typing import Any
 
 from claude_py_scaffold.config import Settings
 

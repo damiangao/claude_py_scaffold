@@ -6,9 +6,9 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from claude_py_scaffold.config import get_settings
-from claude_py_scaffold.database import engine, get_db
+from claude_py_scaffold.database import engine
 from claude_py_scaffold.handlers import register_exception_handlers
-from claude_py_scaffold.logging import setup_logging, get_logger
+from claude_py_scaffold.logging import get_logger, setup_logging
 from claude_py_scaffold.middleware import setup_cors
 from claude_py_scaffold.models.base import Base
 from claude_py_scaffold.routers.v1 import auth as auth_v1
