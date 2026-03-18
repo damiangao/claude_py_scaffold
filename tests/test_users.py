@@ -129,19 +129,19 @@ async def test_duplicate_email(client):
 async def test_list_users(client):
     """测试用户列表（分页）"""
     # 创建多个用户
-    await client.post("/users/", json={
+    await client.post("/api/v1/auth/register", json={
         "username": "user1",
         "email": "user1@example.com",
         "password": "password123",
     })
-    await client.post("/users/", json={
+    await client.post("/api/v1/auth/register", json={
         "username": "user2",
         "email": "user2@example.com",
         "password": "password123",
     })
 
     # 获取用户列表（分页）
-    response = await client.get("/users/?page=1&page_size=10")
+    response = await client.get("/api/v1/users/?page=1&page_size=10")
     assert response.status_code == 200
     data = response.json()
 
@@ -163,14 +163,14 @@ async def test_list_users_pagination(client):
     """测试分页功能"""
     # 创建 5 个用户
     for i in range(5):
-        await client.post("/users/", json={
+        await client.post("/api/v1/auth/register", json={
             "username": f"user{i}",
             "email": f"user{i}@example.com",
             "password": "password123",
         })
 
     # 第一页
-    response = await client.get("/users/?page=1&page_size=2")
+    response = await client.get("/api/v1/users/?page=1&page_size=2")
     assert response.status_code == 200
     data = response.json()
     assert len(data["items"]) == 2
@@ -180,7 +180,7 @@ async def test_list_users_pagination(client):
     assert data["page_info"]["has_prev"] is False
 
     # 第二页
-    response = await client.get("/users/?page=2&page_size=2")
+    response = await client.get("/api/v1/users/?page=2&page_size=2")
     assert response.status_code == 200
     data = response.json()
     assert len(data["items"]) == 2
@@ -189,7 +189,7 @@ async def test_list_users_pagination(client):
     assert data["page_info"]["has_prev"] is True
 
     # 第三页（最后一页）
-    response = await client.get("/users/?page=3&page_size=2")
+    response = await client.get("/api/v1/users/?page=3&page_size=2")
     assert response.status_code == 200
     data = response.json()
     assert len(data["items"]) == 1

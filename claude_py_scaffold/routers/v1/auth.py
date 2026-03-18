@@ -7,7 +7,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from claude_py_scaffold.database import get_db
-from claude_py_scaffold.exceptions import BadRequestException, UnauthorizedException
+from claude_py_scaffold.exceptions import BadRequestException, DuplicateException, UnauthorizedException
 from claude_py_scaffold.models.user import User
 from claude_py_scaffold.schemas import Token, UserCreate, UserResponse
 from claude_py_scaffold.security import hash_password, verify_password
@@ -24,11 +24,11 @@ async def register(
     """用户注册"""
     result = await db.execute(select(User).where(User.username == user_in.username))
     if result.scalar_one_or_none():
-        raise BadRequestException("用户名已存在", error_code="USERNAME_EXISTS")
+        raise DuplicateException("用户名已存在", error_code="USERNAME_EXISTS")
 
     result = await db.execute(select(User).where(User.email == user_in.email))
     if result.scalar_one_or_none():
-        raise BadRequestException("邮箱已被注册", error_code="EMAIL_EXISTS")
+        raise DuplicateException("邮箱已被注册", error_code="EMAIL_EXISTS")
 
     user = User(
         username=user_in.username,
