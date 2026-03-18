@@ -60,7 +60,10 @@
       "Bash(git add -A && git commit -m \"$\\(cat <<'EOF'\nchore: 更新 pre-commit ruff 配置\n\n添加 --exit-non-zero-on-fix 参数，让 pre-commit 在修复后仍然检查错误\nEOF\n\\)\" && git push origin main)",
       "Bash(git add -A && git commit -m \"$\\(cat <<'EOF'\ndocs: 更新 pre-commit 相关文档\n\n- README.md: 添加 pre-commit 行为说明\n- CLAUDE.md: 添加 Pre-commit 章节说明配置和行为\nEOF\n\\)\" && git push origin main)",
       "Bash(uv run ruff format .)",
-      "Bash(git add -A && git commit -m \"$\\(cat <<'EOF'\nchore: 格式化代码\n\n运行 ruff format 修复 CI 格式化问题\nEOF\n\\)\" && git push origin main)"
+      "Bash(git add -A && git commit -m \"$\\(cat <<'EOF'\nchore: 格式化代码\n\n运行 ruff format 修复 CI 格式化问题\nEOF\n\\)\" && git push origin main)",
+      "Bash(pre-commit run --all-files)",
+      "Bash(uv run pre-commit run --all-files)",
+      "Bash(git add -A && git commit -m \"$\\(cat <<'EOF'\nchore: 添加 pre-commit 到开发依赖\n\n- 在 pyproject.toml 中添加 pre-commit 到 dev dependencies\n- 将 pytest hook 移到 commit-msg 阶段，避免与格式化冲突\nEOF\n\\)\" && git push origin main)"
     ]
   }
 }
